@@ -1,0 +1,40 @@
+{
+  "name": "ai2react-loader",
+  "version": "0.0.0",
+  "description": "Webpack plugin for ai2react",
+  "license": "ISC",
+  "repository": "git@gitlab.inside.ap.org:newsapps/ai2react-webpack-plugin",
+  "publishConfig": {
+    "registry": "https://artifactory.ap.org/api/npm/npm/"
+  },
+  "scripts": {
+    "release": "echo 'Successfully released package!'",
+    "prerelease": "yarn version",
+    "postversion": "yarn build && git push --tags && yarn publish ./dist/ --new-version $npm_package_version && git push",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rm -rf ./dist/",
+    "build": "rollup -c",
+    "lint": "eslint \"src/**/*.js\""
+  },
+  "main": "index.js",
+  "module": "index.esm.js",
+  "devDependencies": {
+    "@associatedpress/eslint-config-interact": "^1.0.3",
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@rollup/plugin-commonjs": "^19.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.2",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.30.0",
+    "rollup": "^2.53.2",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4"
+  },
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "loader-utils": "^2.0.0",
+    "schema-utils": "^3.1.0"
+  }
+}
