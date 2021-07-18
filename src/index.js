@@ -17,7 +17,8 @@ export default function ai2ReactLoader() {
   const resourceExt = path.extname(resourcePath)
   const resourceName = path.basename(resourcePath, resourceExt)
 
-  const ai2react = options.ai2react || path.join(require.resolve('ai2react'), 'ai2react.js')
+  const ai2reactDir = path.dirname(require.resolve('ai2react'))
+  const ai2react = options.ai2react || path.join(ai2reactDir, 'ai2react.js')
   child.execSync(`osascript -e 'tell application id "com.adobe.illustrator"
     activate
     open POSIX file "${resourcePath}" without dialogs
