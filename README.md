@@ -4,6 +4,8 @@ ai2react-loader
 A simple and _very_ platform-specific Webpack loader that uses
 [`ai2react`][ai2react] to load Adobe Illustrator files as React components.
 
+Note: This only works on Mac because of the Illustrator automation. Sorry.
+
 ## Installing
 
 Install `ai2react-loader` from NPM using whichever package manager you like.
