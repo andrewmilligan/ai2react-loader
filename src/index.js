@@ -1,9 +1,9 @@
 import child from 'child_process'
 import path from 'path'
 import { stringifyRequest } from 'loader-utils'
-import schema from './schema'
 
 export default function ai2ReactLoader() {
+  const options = {}
   const resourcePath = this.resourcePath
   const resourceDir = path.dirname(resourcePath)
   const resourceName = path.basename(resourcePath, '.ai') // TODO: configurable extension
