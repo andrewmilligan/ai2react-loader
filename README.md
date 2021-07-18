@@ -1,78 +1,116 @@
-ai2react
-========
+ai2react-loader
+===============
+
+A simple and _very_ platform-specific Webpack loader that uses
+[`ai2react`][ai2react] to load Adobe Illustrator files as React components.
 
 ## Installing
 
-The `ai2react` library is available on [our internal NPM registry on
-Artifactory][ap-npm], so you should set up your package manager to use that
-registry if you haven't already. Using your package manager of choice:
+Install `ai2react-loader` from NPM using whichever package manager you like.
+For instance, yarn:
 
 ```
-yarn config set registry https://artifactory.ap.org/api/npm/npm/ --global
-```
-
-or:
-
-```
-npm config set registry https://artifactory.ap.org/api/npm/npm/ --global
-```
-
-Once you have that set up you can install the package like normal. Again, you
-can use whichever package manager you like. For instance, yarn:
-
-```
-yarn add ai2react
+yarn add ai2react-loader
 ```
 
 or npm:
 
 ```
-npm install ai2react
+npm install ai2react-loader
 ```
 
-## Contributing
+## Usage
 
-To contribute to this project, start by cloning this repository, navigating
-into the cloned directory, and installing all the dependencies (e.g., `yarn
-install`). This project uses [Storybook][] to [demonstrate individual
-components][proj-storybook] in isolation rather than in the context of a whole
-app, and you can start a Storybook server locally for live feedback during
-development with:
+In your JS file, you import an Adobe Illustrator file just like it's a normal
+JS module:
 
-```
-yarn storybook
+**file.js**
+
+```js
+import Graphic from './graphic.ai'
 ```
 
-That should open up the project's stories in your browser where you can see
-changes you make in realtime. As you change an existing component make sure its
-stories still work and make sense; if you're adding a new component try to add
-stories for it as well!
+Then add the loader to your `webpack` config. For example:
 
-This project also uses [ESLint][] to maintain code quality and consistency.
-The linter is automatically run on merge requests, but you can run it locally
-with:
+**webpack.config.js**
 
-```
-yarn lint
-```
-
-Note that running `yarn lint --fix` will automatically fix any linting errors
-that can be fixed without you input.
-
-Please do any development on a feature branch and submit a merge request when
-you're ready for a second set of :eyes:
-
-Once a new version of the library is ready to publish you can publish it with:
-
-```
-yarn release
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.ai$/,
+        loader: 'ai2react-loader',
+      },
+    ],
+  },
+}
 ```
 
-That will prompt you for a new version number, build the library, and publish
-it to our internal NPM.
+And run `webpack` via your preferred method. This will use `ai2react` to
+convert the Illustrator file to a React component and will produce a JS module
+that requires and exports the created React component. So if you import the
+Illustrator as `Graphic` then you can render it in JSX, meaning `file.js` might
+look something like this:
 
-Enjoy! :heart:
+```jsx
+import React from 'react'
+import Graphic from './graphic.ai'
 
-[ap-npm]: https://artifactory.ap.org/webapp/#/artifacts/browse/tree/General/npm
-[Storybook]: https://storybook.js.org/
-[ESLint]: https://eslint.org/
+export default function() {
+  return (
+    <div>
+      <h1>A cool graphic made in Adobe Illustrator</h1>
+      <Graphic />
+    </div>
+  )
+}
+```
+
+### Using props in the generated component
+
+The Adobe Illustrator file is converted to JS using `ai2react`, which strips
+out all the text and converts it to HTML overlaid on an image. When the
+generated component is rendered, that text is evaluated using string
+interpolation where the props of the component are available, so if, in your
+Illustrator file, you include an annotation:
+
+> Hello ${props.name}
+
+and you render the resulting component as:
+
+```jsx
+<Graphic name='Andrew' />
+```
+
+then the rendered HTML will include the annotation:
+
+> Hello Andrew
+
+## Options
+
+### `ai2react`
+
+The loader requires `ai2react` as a peer dependency because the code it
+produces depends on the package, and by default it will include the
+`ai2react.js` script included with the `ai2react` package. If you would like to
+use a custom Illustrator script you can provide the absolute path to it as an
+option.
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.ai$/,
+        loader: 'ai2react-loader',
+        options: {
+          ai2react: '/path/to/custom/ai2react.js',
+        },
+      },
+    ],
+  },
+}
+```
+
+[ai2react]: https://github.com/andmilligan/ai2react

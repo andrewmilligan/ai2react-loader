@@ -1,3 +1,31 @@
 {
-  "extends": "@associatedpress/eslint-config-interact"
+  "parser": "@babel/eslint-parser",
+  "root": true,
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "never",
+        "exports": "never",
+        "functions": "never"
+      }
+    ]
+  },
+  "extends": [
+    "eslint:recommended"
+  ]
 }

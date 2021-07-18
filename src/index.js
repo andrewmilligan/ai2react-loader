@@ -1,14 +1,23 @@
 import child from 'child_process'
 import path from 'path'
-import { stringifyRequest } from 'loader-utils'
+import { getOptions, stringifyRequest } from 'loader-utils'
+import { validate } from 'schema-utils'
+import schema from './schema'
 
 export default function ai2ReactLoader() {
-  const options = {}
+  const options = getOptions(this)
+
+  validate(schema, options, {
+    name: 'Ai2React Loader',
+    baseDataPath: 'options',
+  })
+
   const resourcePath = this.resourcePath
   const resourceDir = path.dirname(resourcePath)
-  const resourceName = path.basename(resourcePath, '.ai') // TODO: configurable extension
+  const resourceExt = path.extname(resourcePath)
+  const resourceName = path.basename(resourcePath, resourceExt)
 
-  const ai2react = path.resolve(__dirname, 'ai2react.js')
+  const ai2react = options.ai2react || path.join(require.resolve('ai2react'), 'ai2react.js')
   child.execSync(`osascript -e 'tell application id "com.adobe.illustrator"
     activate
     open POSIX file "${resourcePath}" without dialogs
