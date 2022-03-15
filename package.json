@@ -1,6 +1,6 @@
 {
   "name": "ai2react-loader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Webpack loader Adobe Illustrator files using ai2react",
   "license": "ISC",
   "repository": "https://github.com/andrewmilligan/ai2react-loader",
