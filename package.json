@@ -9,7 +9,7 @@
     "prerelease": "yarn version",
     "postversion": "yarn build && yarn publish ./dist/ --new-version $npm_package_version && git push --follow-tags",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prebuild": "rm -rf ./dist/",
+    "prebuild": "rm -rf ./dist/*",
     "build": "rollup -c",
     "lint": "eslint \"src/**/*.js\""
   },
